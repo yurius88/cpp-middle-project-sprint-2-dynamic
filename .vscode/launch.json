@@ -5,15 +5,43 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "lldb",
+            // "type": "lldb",
+            // "request": "launch",
+            // "name": "Launch DymanicScan",
+            // "program": "${workspaceFolder}/build/scan_tests",
+            // "args": [
+            // ],
+            // "cwd": "${workspaceFolder}/build",
+            // "preLaunchTask": "GCC: Build Debug",
+            // "initCommands": ["settings set target.disable-aslr false"]
+            "type": "cppdbg",
+            "MIDebuggerPath": "/usr/bin/gdb",
             "request": "launch",
-            "name": "Launch DymanicScan",
-            "program": "${workspaceFolder}/build/scan_tests",
+            "name": "Launch Debug unit_tests",
+            "program": "${workspaceFolder}/build/scan_tests",            
+            "autoAttachChildProcesses": true,            
+            "cwd": "${workspaceFolder}/build",    
+            "console": "internalConsole", // <-- Направляет вывод в Debug Console вместо Terminal
+            "externalConsole": false,
+            "MIMode": "gdb",
             "args": [
+                "--input",
+                "input.txt",
+                "--command",
+                "checksum"
             ],
-            "cwd": "${workspaceFolder}/build",
-            "preLaunchTask": "GCC: Build Debug",
-            "initCommands": ["settings set target.disable-aslr false"]
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Запретить GDB трогать терминал, используемый Git",
+                    "text": "set inferior-tty /dev/null", // <--- ДОБАВЬТЕ ЭТУ СТРОКУ
+                    "ignoreFailures": true
+                }
+            ]
         }
 
     ]
